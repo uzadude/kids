@@ -58,14 +58,16 @@
     </style>
   </head>
   <body>
-    <div id="letter">A a</div>
+    <div id="letter">B a</div>
     <div id="timer">10</div>
     <div class="counters">
       <div class="counter-label">
         <span id="correctCounter">0</span>
+        <span>Correct</span>
       </div>
       <div class="counter-label">
         <span id="incorrectCounter">0</span>
+        <span>Incorrect</span>
       </div>
     </div>
     <div class="buttons">
@@ -84,11 +86,10 @@
     <script>
       let correctCount = 0;
       let incorrectCount = 0;
-      let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-      // let letters = "GHJKQY".split("");
-      // let letters = "AEIOU".split("");
-      // let letters = "CEFGHJKMPRY".split("");
-      let currentIndex = 0;
+      let consonants = "BCDFGHJKLMNPQRSTVWXYZ".split("");
+      let vowels = "AEIOU".split("");
+      let consonantIndex = 0;
+      let vowelIndex = 0;
       let timer = 10;
       let timerInterval;
 
@@ -100,15 +101,22 @@
       }
 
       function generateRandomLetter() {
-        if (currentIndex >= letters.length) {
-          shuffleArray(letters); // Reshuffle the letters when all have been used
-          currentIndex = 0;
+        if (consonantIndex >= consonants.length) {
+          shuffleArray(consonants);
+          consonantIndex = 0;
         }
-        const uppercaseLetter = letters[currentIndex];
-        const lowercaseLetter = uppercaseLetter.toLowerCase();
-        document.getElementById("letter").innerText =
-          `${uppercaseLetter} ${lowercaseLetter}`;
-        currentIndex++;
+        if (vowelIndex >= vowels.length) {
+          shuffleArray(vowels);
+          vowelIndex = 0;
+        }
+
+        const consonant = consonants[consonantIndex];
+        const vowel = vowels[vowelIndex];
+        document.getElementById("letter").innerText = `${consonant} ${vowel}`;
+        //`${consonant} ${vowel.toLowerCase()}`;
+
+        consonantIndex++;
+        vowelIndex++;
 
         resetTimer();
       }
@@ -130,8 +138,10 @@
         incorrectCount = 0;
         document.getElementById("correctCounter").innerText = correctCount;
         document.getElementById("incorrectCounter").innerText = incorrectCount;
-        shuffleArray(letters); // Reshuffle letters on reset
-        currentIndex = 0;
+        shuffleArray(consonants);
+        shuffleArray(vowels);
+        consonantIndex = 0;
+        vowelIndex = 0;
         generateRandomLetter();
       }
 
@@ -140,10 +150,8 @@
         timer = 10;
         document.getElementById("timer").innerText = timer;
         timerInterval = setInterval(() => {
-          // timer--;
-          if (timer >= 0) {
-            document.getElementById("timer").innerText = timer;
-          }
+          //timer--;
+          document.getElementById("timer").innerText = timer;
           if (timer === 0) {
             markIncorrect(); // Mark as incorrect if time runs out
           }
@@ -151,7 +159,8 @@
       }
 
       // Initial shuffle and display
-      shuffleArray(letters);
+      shuffleArray(consonants);
+      shuffleArray(vowels);
       generateRandomLetter();
     </script>
   </body>
