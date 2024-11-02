@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Random Letter Quiz</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        /*font-family: Arial, sans-serif;*/
+        margin: 0;
+      }
+      #letter {
+        font-size: 23rem;
+        margin-bottom: 20px;
+      }
+      .counters {
+        font-size: 3rem;
+        margin: 10px 0;
+        display: flex;
+        gap: 20px;
+      }
+      .counter-label {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #correctCounter {
+        color: green;
+        font-weight: bold;
+        padding: 20px;
+      }
+      #incorrectCounter {
+        color: red;
+        font-weight: bold;
+        padding: 20px;
+      }
+      #timer {
+        font-size: 3rem;
+        color: blue;
+        font-weight: bold;
+        margin: 20px 0;
+      }
+      .buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="letter">A a</div>
+    <div id="timer">10</div>
+    <div class="counters">
+      <div class="counter-label">
+        <span id="correctCounter">0</span>
+      </div>
+      <div class="counter-label">
+        <span id="incorrectCounter">0</span>
+      </div>
+    </div>
+    <div class="buttons">
+      <button onclick="markCorrect()" title="Mark as correct">Correct</button>
+      <button onclick="markIncorrect()" title="Mark as incorrect">
+        Incorrect
+      </button>
+      <button onclick="generateRandomLetter()" title="Switch to a new letter">
+        Switch Letter
+      </button>
+      <button onclick="resetCounters()" title="Reset the counters">
+        Reset
+      </button>
+    </div>
+
+    <script>
+      let correctCount = 0;
+      let incorrectCount = 0;
+      let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+      // let letters = "AEIOU".split("");
+      let currentIndex = 0;
+      let timer = 10;
+      let timerInterval;
+
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      function generateRandomLetter() {
+        if (currentIndex >= letters.length) {
+          shuffleArray(letters); // Reshuffle the letters when all have been used
+          currentIndex = 0;
+        }
+        const uppercaseLetter = letters[currentIndex];
+        const lowercaseLetter = uppercaseLetter.toLowerCase();
+        document.getElementById("letter").innerText =
+          `${uppercaseLetter} ${lowercaseLetter}`;
+        currentIndex++;
+
+        resetTimer();
+      }
+
+      function markCorrect() {
+        correctCount++;
+        document.getElementById("correctCounter").innerText = correctCount;
+        generateRandomLetter();
+      }
+
+      function markIncorrect() {
+        incorrectCount++;
+        document.getElementById("incorrectCounter").innerText = incorrectCount;
+        generateRandomLetter();
+      }
+
+      function resetCounters() {
+        correctCount = 0;
+        incorrectCount = 0;
+        document.getElementById("correctCounter").innerText = correctCount;
+        document.getElementById("incorrectCounter").innerText = incorrectCount;
+        shuffleArray(letters); // Reshuffle letters on reset
+        currentIndex = 0;
+        generateRandomLetter();
+      }
+
+      function resetTimer() {
+        clearInterval(timerInterval);
+        timer = 10;
+        document.getElementById("timer").innerText = timer;
+        timerInterval = setInterval(() => {
+          timer--;
+          if (timer >= 0) {
+            document.getElementById("timer").innerText = timer;
+          }
+          if (timer === 0) {
+            markIncorrect(); // Mark as incorrect if time runs out
+          }
+        }, 1000);
+      }
+
+      // Initial shuffle and display
+      shuffleArray(letters);
+      generateRandomLetter();
+    </script>
+  </body>
+</html>
