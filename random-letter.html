@@ -59,6 +59,10 @@
         min-width: 100px;
         border-radius: 5px;
       }
+      #toggle-case {
+        margin-top: 20px;
+        font-size: 4vw;
+      }
 
       /* Responsive adjustments */
       @media (max-width: 768px) {
@@ -77,6 +81,9 @@
           font-size: 5vw;
           padding: 10px;
         }
+        #toggle-case {
+          font-size: 5vw;
+        }
       }
     </style>
   </head>
@@ -90,6 +97,14 @@
       <div class="counter-label">
         <span id="incorrectCounter">0</span>
       </div>
+    </div>
+    <div id="toggle-case">
+      <label for="letterCase">Show letters as:</label>
+      <select id="letterCase" onchange="generateRandomLetter()">
+        <option value="both">Both</option>
+        <option value="uppercase">Uppercase only</option>
+        <option value="lowercase">Lowercase only</option>
+      </select>
     </div>
     <div class="buttons">
       <button onclick="markCorrect()" title="Mark as correct">Correct</button>
@@ -124,15 +139,24 @@
 
       function generateRandomLetter() {
         if (currentIndex >= letters.length) {
-          shuffleArray(letters); // Reshuffle the letters when all have been used
+          shuffleArray(letters);
           currentIndex = 0;
         }
         const uppercaseLetter = letters[currentIndex];
         const lowercaseLetter = uppercaseLetter.toLowerCase();
-        document.getElementById("letter").innerText =
-          `${uppercaseLetter} ${lowercaseLetter}`;
-        currentIndex++;
+        const letterCase = document.getElementById("letterCase").value;
 
+        // Display based on selected case
+        if (letterCase === "uppercase") {
+          document.getElementById("letter").innerText = uppercaseLetter;
+        } else if (letterCase === "lowercase") {
+          document.getElementById("letter").innerText = lowercaseLetter;
+        } else {
+          document.getElementById("letter").innerText =
+            `${uppercaseLetter} ${lowercaseLetter}`;
+        }
+
+        currentIndex++;
         resetTimer();
       }
 
@@ -153,7 +177,7 @@
         incorrectCount = 0;
         document.getElementById("correctCounter").innerText = correctCount;
         document.getElementById("incorrectCounter").innerText = incorrectCount;
-        shuffleArray(letters); // Reshuffle letters on reset
+        shuffleArray(letters);
         currentIndex = 0;
         generateRandomLetter();
       }
@@ -163,17 +187,15 @@
         timer = 10;
         document.getElementById("timer").innerText = timer;
         timerInterval = setInterval(() => {
-          // timer--;
           if (timer >= 0) {
             document.getElementById("timer").innerText = timer;
           }
           if (timer === 0) {
-            markIncorrect(); // Mark as incorrect if time runs out
+            markIncorrect();
           }
         }, 1000);
       }
 
-      // Initial shuffle and display
       shuffleArray(letters);
       generateRandomLetter();
     </script>
