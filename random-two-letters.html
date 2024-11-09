@@ -11,18 +11,24 @@
         align-items: center;
         justify-content: center;
         height: 100vh;
-        /*font-family: Arial, sans-serif;*/
         margin: 0;
+        /*font-family: Arial, sans-serif;*/
       }
       #letter {
-        font-size: 23rem;
+        font-size: 20vw;
         margin-bottom: 20px;
       }
+      #timer {
+        font-size: 5vw;
+        color: blue;
+        font-weight: bold;
+        margin: 10px 0;
+      }
       .counters {
-        font-size: 3rem;
+        font-size: 4vw;
         margin: 10px 0;
         display: flex;
-        gap: 20px;
+        gap: 15px;
       }
       .counter-label {
         display: flex;
@@ -32,28 +38,45 @@
       #correctCounter {
         color: green;
         font-weight: bold;
-        padding: 20px;
+        padding: 10px;
       }
       #incorrectCounter {
         color: red;
         font-weight: bold;
-        padding: 20px;
-      }
-      #timer {
-        font-size: 3rem;
-        color: blue;
-        font-weight: bold;
-        margin: 20px 0;
+        padding: 10px;
       }
       .buttons {
         display: flex;
+        flex-wrap: wrap;
         gap: 10px;
-        margin-top: 20px;
+        margin-top: 15px;
+        justify-content: center;
       }
       button {
-        padding: 10px 20px;
-        font-size: 1rem;
+        padding: 12px 15px;
+        font-size: 4vw;
         cursor: pointer;
+        min-width: 100px;
+        border-radius: 5px;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        #letter {
+          font-size: 18vw;
+          margin-bottom: 15px;
+        }
+        #timer {
+          font-size: 6vw;
+          margin: 10px 0;
+        }
+        .counters {
+          font-size: 5vw;
+        }
+        button {
+          font-size: 5vw;
+          padding: 10px;
+        }
       }
     </style>
   </head>
