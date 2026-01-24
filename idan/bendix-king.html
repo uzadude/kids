@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bendix King Radio Simulator</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #2a2a2a;
+        font-family: Arial, sans-serif;
+      }
+
+      .radio-container {
+        position: relative;
+        max-width: 600px;
+        width: 100%;
+      }
+
+      .radio-image {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .button {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .button:hover {
+        background-color: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.6);
+      }
+
+      .button:active {
+        background-color: rgba(255, 255, 255, 0.5);
+        transform: scale(0.95);
+      }
+
+      /* Side buttons (left) */
+      .side-btn-left {
+        left: 27.5%;
+        width: 4%;
+        height: 3.2%;
+      }
+
+      /* Side buttons (right) */
+      .side-btn-right {
+        left: 90.5%;
+        width: 4%;
+        height: 3.2%;
+      }
+
+      /* Bottom buttons */
+      .bottom-btn {
+        height: 5.2%;
+        border-radius: 3px;
+      }
+
+      .page-btn {
+        left: 27%;
+        top: 72%;
+        width: 10%;
+      }
+      .dmeh-btn {
+        left: 38.5%;
+        top: 72%;
+        width: 10%;
+      }
+      .idt-btn {
+        left: 51%;
+        top: 72%;
+        width: 9.5%;
+      }
+      .sq-btn {
+        left: 28%;
+        top: 79.5%;
+        width: 8.5%;
+      }
+      .mem-btn {
+        left: 39%;
+        top: 79.5%;
+        width: 8.5%;
+      }
+      .dim-btn {
+        left: 27%;
+        top: 87%;
+        width: 10%;
+      }
+
+      /* Knob */
+      .knob {
+        position: absolute;
+        left: 67.5%;
+        top: 83%;
+        width: 12%;
+        height: 12%;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .knob:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.5);
+      }
+
+      /* Console for feedback */
+      .console {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: rgba(0, 0, 0, 0.8);
+        color: #0f0;
+        padding: 15px;
+        border-radius: 5px;
+        font-family: monospace;
+        max-width: 300px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      .console-line {
+        margin: 3px 0;
+      }
+
+      /* Display text overlays */
+      .text-indicator {
+        position: absolute;
+        border: 3px solid transparent;
+        transition: border-color 0.2s;
+        pointer-events: none;
+      }
+
+      .text-indicator.active {
+        border-color: #00ff00;
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+      }
+
+      .line1 {
+        left: 38%;
+        top: 16%;
+        width: 23%;
+        height: 3.5%;
+      }
+      .line2 {
+        left: 38%;
+        top: 31%;
+        width: 12%;
+        height: 3%;
+      }
+      .line3 {
+        left: 38%;
+        top: 36%;
+        width: 54%;
+        height: 8%;
+      }
+      .line4 {
+        left: 38%;
+        top: 47%;
+        width: 54%;
+        height: 5%;
+      }
+      .line5 {
+        left: 38%;
+        top: 56%;
+        width: 54%;
+        height: 8%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="radio-container">
+      <img src="bendix-king.png" alt="Bendix King Radio" class="radio-image" />
+
+      <!-- Display text indicators -->
+      <div class="text-indicator line1" data-line="1"></div>
+      <div class="text-indicator line2" data-line="2"></div>
+      <div class="text-indicator line3" data-line="3"></div>
+      <div class="text-indicator line4" data-line="4"></div>
+      <div class="text-indicator line5" data-line="5"></div>
+
+      <!-- Left side buttons -->
+      <div
+        class="button side-btn-left"
+        style="top: 24%; left: 31%"
+        data-button="L1"
+      ></div>
+      <div
+        class="button side-btn-left"
+        style="top: 33.5%; left: 31%"
+        data-button="L2"
+      ></div>
+      <div
+        class="button side-btn-left"
+        style="top: 43.5%; left: 31%"
+        data-button="L3"
+      ></div>
+      <div
+        class="button side-btn-left"
+        style="top: 50.5%"
+        data-button="L4"
+      ></div>
+      <div class="button side-btn-left" style="top: 61%" data-button="L5"></div>
+
+      <!-- Right side buttons -->
+      <div
+        class="button side-btn-right"
+        style="top: 19%"
+        data-button="R1"
+      ></div>
+      <div
+        class="button side-btn-right"
+        style="top: 29.5%"
+        data-button="R2"
+      ></div>
+      <div
+        class="button side-btn-right"
+        style="top: 40%"
+        data-button="R3"
+      ></div>
+      <div
+        class="button side-btn-right"
+        style="top: 50.5%"
+        data-button="R4"
+      ></div>
+      <div
+        class="button side-btn-right"
+        style="top: 61%"
+        data-button="R5"
+      ></div>
+
+      <!-- Bottom buttons -->
+      <div class="button bottom-btn page-btn" data-button="PAGE"></div>
+      <div class="button bottom-btn dmeh-btn" data-button="DMEH"></div>
+      <div class="button bottom-btn idt-btn" data-button="IDT"></div>
+      <div class="button bottom-btn sq-btn" data-button="SQ"></div>
+      <div class="button bottom-btn mem-btn" data-button="MEM"></div>
+      <div class="button bottom-btn dim-btn" data-button="DIM"></div>
+
+      <!-- Knob -->
+      <div class="knob" data-button="KNOB"></div>
+    </div>
+
+    <div class="console" id="console">
+      <div class="console-line">Ready...</div>
+    </div>
+
+    <script>
+      const consoleEl = document.getElementById("console");
+      let clickCount = 0;
+
+      function log(message) {
+        const line = document.createElement("div");
+        line.className = "console-line";
+        line.textContent = `[${++clickCount}] ${message}`;
+        consoleEl.appendChild(line);
+        consoleEl.scrollTop = consoleEl.scrollHeight;
+
+        // Keep only last 20 messages
+        while (consoleEl.children.length > 20) {
+          consoleEl.removeChild(consoleEl.firstChild);
+        }
+      }
+
+      // Add click handlers to all buttons
+      document.querySelectorAll(".button, .knob").forEach((element) => {
+        element.addEventListener("click", function () {
+          const buttonName = this.dataset.button;
+          log(`Button clicked: ${buttonName}`);
+
+          // Add your custom functionality here
+          handleButtonClick(buttonName);
+        });
+      });
+
+      // Custom button handler - modify this function for your needs
+      function handleButtonClick(buttonName) {
+        // Map side buttons to display lines
+        const lineMapping = {
+          L1: 1,
+          R1: 1,
+          L2: 2,
+          R2: 2,
+          L3: 3,
+          R3: 3,
+          L4: 4,
+          R4: 4,
+          L5: 5,
+          R5: 5,
+        };
+
+        if (lineMapping[buttonName]) {
+          const lineNum = lineMapping[buttonName];
+          const indicator = document.querySelector(
+            `.text-indicator[data-line="${lineNum}"]`,
+          );
+          if (indicator) {
+            indicator.classList.toggle("active");
+            const state = indicator.classList.contains("active")
+              ? "selected"
+              : "deselected";
+            console.log(`Line ${lineNum} ${state}`);
+          }
+        }
+
+        switch (buttonName) {
+          case "PAGE":
+            console.log("Page button pressed");
+            break;
+          case "DMEH":
+            console.log("DMEH button pressed");
+            break;
+          case "IDT":
+            console.log("IDT button pressed");
+            break;
+          case "SQ":
+            console.log("SQ button pressed");
+            break;
+          case "MEM":
+            console.log("MEM button pressed");
+            break;
+          case "DIM":
+            console.log("DIM button pressed");
+            break;
+          case "KNOB":
+            console.log("Knob clicked");
+            break;
+          default:
+            console.log(`Side button ${buttonName} pressed`);
+        }
+      }
+
+      // Optional: Add keyboard shortcuts
+      document.addEventListener("keydown", function (e) {
+        const keyMap = {
+          1: "L1",
+          2: "L2",
+          3: "L3",
+          4: "L4",
+          5: "L5",
+          6: "R1",
+          7: "R2",
+          8: "R3",
+          9: "R4",
+          0: "R5",
+          p: "PAGE",
+          d: "DMEH",
+          i: "IDT",
+          s: "SQ",
+          m: "MEM",
+          b: "DIM",
+        };
+
+        if (keyMap[e.key.toLowerCase()]) {
+          log(`Key pressed: ${e.key} → ${keyMap[e.key.toLowerCase()]}`);
+          handleButtonClick(keyMap[e.key.toLowerCase()]);
+        }
+      });
+    </script>
+  </body>
+</html>
